@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/createHabitFragment"
-        android:name="com.example.habittracker.view.CreateHabitFragment"
+        android:name="com.example.habittracker.view.AddHabitFragment"
         android:label="fragment_create_habit"
-        tools:layout="@layout/fragment_create_habit" />
+        tools:layout="@layout/fragment_add_habit" />
 </navigation>

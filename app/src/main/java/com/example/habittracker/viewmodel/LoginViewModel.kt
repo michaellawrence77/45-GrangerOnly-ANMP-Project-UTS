@@ -1,4 +1,10 @@
 package com.example.habittracker.viewmodel
 
-class LoginViewModel {
+import androidx.lifecycle.ViewModel
+
+class LoginViewModel : ViewModel() {
+
+    fun login(username: String, password: String): Boolean {
+        return username == "student" && password == "123"
+    }
 }
