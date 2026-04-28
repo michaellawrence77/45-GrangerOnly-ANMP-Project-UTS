@@ -3,16 +3,20 @@ package com.example.habittracker.view
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.habittracker.R
 import com.example.habittracker.databinding.FragmentDashboardBinding
-import com.example.habittracker.model.Habit
+import com.example.habittracker.viewmodel.HabitViewModel
 
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
 
-    private val habitList = ArrayList<Habit>()
+    private val viewModel: HabitViewModel by activityViewModels()
+
     private lateinit var adapter: HabitListAdapter
 
     override fun onCreateView(
@@ -25,14 +29,21 @@ class DashboardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        adapter = HabitListAdapter(habitList)
+        if (viewModel.habitList.isEmpty()) {
+            viewModel.loadData(requireContext())
+        }
+
+        adapter = HabitListAdapter(viewModel.habitList) {
+            viewModel.saveData(requireContext())
+        }
+
         binding.recHabit.layoutManager = LinearLayoutManager(context)
         binding.recHabit.adapter = adapter
 
-        // dummy data sementara
-        habitList.add(
-            Habit("Minum Air", "Minum 8 gelas", 8, 2, 0)
-        )
+        binding.fabAdd.setOnClickListener {
+            findNavController().navigate(R.id.action_dashboardFragment_to_addHabitFragment)
+        }
+
         adapter.notifyDataSetChanged()
     }
 

@@ -20,12 +20,16 @@
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard" >
         <action
-            android:id="@+id/action_dashboardFragment_to_createHabitFragment"
-            app:destination="@id/createHabitFragment" />
+            android:id="@+id/action_dashboardFragment_to_addHabitFragment"
+            app:destination="@id/addHabitFragment" />
     </fragment>
     <fragment
-        android:id="@+id/createHabitFragment"
+        android:id="@+id/addHabitFragment"
         android:name="com.example.habittracker.view.AddHabitFragment"
-        android:label="fragment_create_habit"
-        tools:layout="@layout/fragment_add_habit" />
+        android:label="fragment_add_habit"
+        tools:layout="@layout/fragment_add_habit" >
+        <action
+            android:id="@+id/action_addHabitFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment" />
+    </fragment>
 </navigation>

@@ -29,7 +29,6 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Init ViewModel
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
         binding.btnLogin.setOnClickListener {

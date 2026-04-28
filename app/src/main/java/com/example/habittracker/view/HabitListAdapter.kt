@@ -7,7 +7,10 @@ import com.example.habittracker.R
 import com.example.habittracker.databinding.ItemHabitBinding
 import com.example.habittracker.model.Habit
 
-class HabitListAdapter(val habitList: ArrayList<Habit>) :
+class HabitListAdapter(
+    val habitList: ArrayList<Habit>,
+    val onDataChanged: () -> Unit
+) :
     RecyclerView.Adapter<HabitListAdapter.HabitViewHolder>() {
 
     class HabitViewHolder(val binding: ItemHabitBinding) :
@@ -26,18 +29,18 @@ class HabitListAdapter(val habitList: ArrayList<Habit>) :
 
         holder.binding.txtName.text = habit.name
         holder.binding.txtDesc.text = habit.description
+        holder.binding.imgIcon.setImageResource(habit.icon)
 
         holder.binding.progressBar.max = habit.goal
         holder.binding.progressBar.progress = habit.progress
 
         holder.binding.txtProgressValue.text =
-            "${habit.progress} / ${habit.goal} glasses"
+            "${habit.progress} / ${habit.goal} ${habit.unit}"
 
         val context = holder.itemView.context
 
         if (habit.progress >= habit.goal) {
 
-            // STATUS
             holder.binding.txtStatus.text = "Completed"
             holder.binding.txtStatus.setBackgroundColor(
                 context.getColor(R.color.green)
@@ -46,21 +49,17 @@ class HabitListAdapter(val habitList: ArrayList<Habit>) :
                 context.getColor(android.R.color.white)
             )
 
-            // CHECK ICON
             holder.binding.imgCheck.visibility = android.view.View.VISIBLE
 
-            // PROGRESS BAR HIJAU
             holder.binding.progressBar.progressTintList =
                 android.content.res.ColorStateList.valueOf(
                     context.getColor(R.color.green)
                 )
 
-            // GARIS KIRI
             holder.binding.leftIndicator.setBackgroundColor(
                 context.getColor(R.color.green)
             )
 
-            // DISABLE BUTTON
             holder.binding.btnPlus.isEnabled = false
             holder.binding.btnMinus.isEnabled = false
 
@@ -85,31 +84,24 @@ class HabitListAdapter(val habitList: ArrayList<Habit>) :
                 android.graphics.Color.TRANSPARENT
             )
 
-            // ENABLE BUTTON
             holder.binding.btnPlus.isEnabled = true
             holder.binding.btnMinus.isEnabled = true
         }
 
-        // BUTTON PLUS
         holder.binding.btnPlus.setOnClickListener {
             if (habit.progress < habit.goal) {
                 habit.progress++
                 notifyItemChanged(position)
+                onDataChanged()
             }
         }
 
-        // BUTTON MINUS
         holder.binding.btnMinus.setOnClickListener {
             if (habit.progress > 0) {
                 habit.progress--
                 notifyItemChanged(position)
+                onDataChanged()
             }
         }
-    }
-
-    fun updateData(newList: ArrayList<Habit>) {
-        habitList.clear()
-        habitList.addAll(newList)
-        notifyDataSetChanged()
     }
 }

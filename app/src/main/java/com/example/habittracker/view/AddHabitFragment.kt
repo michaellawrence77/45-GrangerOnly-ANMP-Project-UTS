@@ -1,60 +1,70 @@
 package com.example.habittracker.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.habittracker.R
+import com.example.habittracker.databinding.FragmentAddHabitBinding
+import com.example.habittracker.model.Habit
+import com.example.habittracker.viewmodel.HabitViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AddHabitFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class AddHabitFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentAddHabitBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private val viewModel: HabitViewModel by activityViewModels()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        _binding = FragmentAddHabitBinding.bind(view)
+
+        val iconList = arrayOf("Fitness", "Study", "Drink", "Meditation")
+        val adapter = ArrayAdapter(requireContext(),
+            android.R.layout.simple_spinner_dropdown_item, iconList)
+        binding.spinnerIcon.adapter = adapter
+
+        binding.btnBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        binding.btnCreate.setOnClickListener {
+
+            val name = binding.etName.text.toString()
+            val desc = binding.etDesc.text.toString()
+            val goalStr = binding.etGoal.text.toString()
+            val unit = binding.etUnit.text.toString()
+
+            if (name.isEmpty() || desc.isEmpty() || goalStr.isEmpty() || unit.isEmpty()) {
+                Toast.makeText(requireContext(), "All fields must be filled", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val goal = goalStr.toInt()
+
+            val iconRes = when (binding.spinnerIcon.selectedItem.toString()) {
+                "Fitness" -> R.drawable.ic_fitness
+                "Study" -> R.drawable.ic_study
+                "Drink" -> R.drawable.ic_drink
+                "Meditation" -> R.drawable.ic_meditation
+                else -> android.R.drawable.ic_menu_help
+            }
+
+            val habit = Habit(name, desc, goal, 0, iconRes, unit)
+
+            viewModel.addHabit(requireContext(), habit)
+
+            findNavController().popBackStack()
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_habit, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CreateHabitFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AddHabitFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
