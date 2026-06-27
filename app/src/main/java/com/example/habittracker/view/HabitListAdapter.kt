@@ -8,8 +8,8 @@ import com.example.habittracker.databinding.ItemHabitBinding
 import com.example.habittracker.model.Habit
 
 class HabitListAdapter(
-    val habitList: ArrayList<Habit>,
-    val onDataChanged: () -> Unit
+    private val habitList: ArrayList<Habit>,
+    private val onHabitUpdated: (Habit) -> Unit
 ) :
     RecyclerView.Adapter<HabitListAdapter.HabitViewHolder>() {
 
@@ -92,7 +92,7 @@ class HabitListAdapter(
             if (habit.progress < habit.goal) {
                 habit.progress++
                 notifyItemChanged(position)
-                onDataChanged()
+                onHabitUpdated(habit)
             }
         }
 
@@ -100,8 +100,14 @@ class HabitListAdapter(
             if (habit.progress > 0) {
                 habit.progress--
                 notifyItemChanged(position)
-                onDataChanged()
+                onHabitUpdated(habit)
             }
         }
+    }
+
+    fun updateData(newList: ArrayList<Habit>) {
+        habitList.clear()
+        habitList.addAll(newList)
+        notifyDataSetChanged()
     }
 }

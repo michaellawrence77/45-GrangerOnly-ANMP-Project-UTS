@@ -28,23 +28,22 @@ class DashboardFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        if (viewModel.habitList.isEmpty()) {
-            viewModel.loadData(requireContext())
+        adapter = HabitListAdapter(arrayListOf()) {
+            viewModel.updateHabit(it)
         }
 
-        adapter = HabitListAdapter(viewModel.habitList) {
-            viewModel.saveData(requireContext())
-        }
-
-        binding.recHabit.layoutManager = LinearLayoutManager(context)
+        binding.recHabit.layoutManager = LinearLayoutManager(requireContext())
         binding.recHabit.adapter = adapter
 
         binding.fabAdd.setOnClickListener {
             findNavController().navigate(R.id.action_dashboardFragment_to_addHabitFragment)
         }
 
-        adapter.notifyDataSetChanged()
+        viewModel.habitList.observe(viewLifecycleOwner) { list ->
+            adapter.updateData(ArrayList(list))
+        }
     }
 
     override fun onDestroyView() {

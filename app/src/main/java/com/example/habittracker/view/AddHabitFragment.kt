@@ -55,9 +55,17 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                 else -> android.R.drawable.ic_menu_help
             }
 
-            val habit = Habit(name, desc, goal, 0, iconRes, unit)
+            val habit = Habit(
+                id = 0,
+                name = name,
+                description = desc,
+                goal = goal,
+                progress = 0,
+                icon = iconRes,
+                unit = unit
+            )
 
-            viewModel.addHabit(requireContext(), habit)
+            viewModel.insertHabit(habit)
 
             findNavController().popBackStack()
         }

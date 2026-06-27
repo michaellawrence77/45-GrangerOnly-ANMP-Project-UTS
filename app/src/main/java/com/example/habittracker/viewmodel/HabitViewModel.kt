@@ -1,43 +1,36 @@
 package com.example.habittracker.viewmodel
 
-import android.content.Context
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
+import com.example.habittracker.database.HabitDatabase
 import com.example.habittracker.model.Habit
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class HabitViewModel : ViewModel() {
+class HabitViewModel(application: Application) : AndroidViewModel(application) {
 
-    val habitList = ArrayList<Habit>()
+    private val db = HabitDatabase.buildDatabase(application)
+    private val habitDao = db.habitDao()
 
-    fun loadData(context: Context) {
-        val sharedPref = context.getSharedPreferences("habit_prefs", Context.MODE_PRIVATE)
+    val habitList: LiveData<List<Habit>> = habitDao.getAllHabit()
 
-        val gson = Gson()
-        val json = sharedPref.getString("habit_list", null)
-
-        val type = object : TypeToken<ArrayList<Habit>>() {}.type
-
-        if (json != null) {
-            val data: ArrayList<Habit> = gson.fromJson(json, type)
-            habitList.clear()
-            habitList.addAll(data)
+    fun insertHabit(habit: Habit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            habitDao.insertHabit(habit)
         }
     }
 
-    fun saveData(context: Context) {
-        val sharedPref = context.getSharedPreferences("habit_prefs", Context.MODE_PRIVATE)
-
-        val editor = sharedPref.edit()
-        val gson = Gson()
-
-        val json = gson.toJson(habitList)
-        editor.putString("habit_list", json)
-        editor.apply()
+    fun updateHabit(habit: Habit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            habitDao.updateHabit(habit)
+        }
     }
 
-    fun addHabit(context: Context, habit: Habit) {
-        habitList.add(habit)
-        saveData(context)
+    fun deleteHabit(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            habitDao.deleteHabit(id)
+        }
     }
 }
