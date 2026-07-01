@@ -1,7 +1,10 @@
 package com.example.habittracker.view
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -20,25 +23,53 @@ class DashboardFragment : Fragment() {
     private lateinit var adapter: HabitListAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+
+        _binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_dashboard,
+            container,
+            false
+        )
+
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = HabitListAdapter(arrayListOf()) {
-            viewModel.updateHabit(it)
-        }
+        adapter = HabitListAdapter(
+
+            arrayListOf(),
+
+            onHabitUpdated = { habit ->
+                viewModel.updateHabit(habit)
+            },
+
+            onHabitClicked = { habit ->
+
+                val action =
+                    DashboardFragmentDirections
+                        .actionDashboardFragmentToEditHabitFragment(habit)
+
+                findNavController().navigate(action)
+            }
+
+        )
 
         binding.recHabit.layoutManager = LinearLayoutManager(requireContext())
         binding.recHabit.adapter = adapter
 
         binding.fabAdd.setOnClickListener {
-            findNavController().navigate(R.id.action_dashboardFragment_to_addHabitFragment)
+            findNavController().navigate(
+                R.id.action_dashboardFragment_to_addHabitFragment
+            )
         }
 
         viewModel.habitList.observe(viewLifecycleOwner) { list ->

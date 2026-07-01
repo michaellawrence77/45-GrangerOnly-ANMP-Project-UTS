@@ -1,151 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:id="@+id/topBar"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:background="@android:color/holo_purple"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+    <data>
 
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@android:drawable/ic_media_previous"/>
+        <variable
+            name="viewModel"
+            type="com.example.habittracker.viewmodel.HabitViewModel"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Create New Habit"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginStart="16dp"/>
-    </LinearLayout>
+    </data>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardForm"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="6dp"
-        app:layout_constraintTop_toBottomOf="@id/topBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F5F5F5">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:id="@+id/topBar"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:background="@android:color/holo_purple"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_media_previous"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add a New Habit"
+                android:layout_marginStart="16dp"
+                android:text="Create New Habit"
+                android:textColor="@android:color/white"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"/>
+                android:textStyle="bold"/>
 
-            <EditText
-                android:id="@+id/etName"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:hint="Habit Name *"
-                android:background="@android:drawable/edit_text"
-                android:padding="12dp"/>
+        </LinearLayout>
 
-            <EditText
-                android:id="@+id/etDesc"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:hint="Short Description *"
-                android:background="@android:drawable/edit_text"
-                android:padding="12dp"
-                android:layout_marginTop="12dp"/>
-
-            <EditText
-                android:id="@+id/etGoal"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:hint="Goal *"
-                android:inputType="number"
-                android:background="@android:drawable/edit_text"
-                android:padding="12dp"
-                android:layout_marginTop="12dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="How many to complete this task?"
-                android:textSize="12sp"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginTop="4dp"/>
-
-            <EditText
-                android:id="@+id/etUnit"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:hint="Unit *"
-                android:background="@android:drawable/edit_text"
-                android:padding="12dp"
-                android:layout_marginTop="12dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="e.g., glasses, minutes, pages, meals"
-                android:textSize="12sp"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginTop="4dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Select Icon"
-                android:layout_marginTop="12dp"/>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardForm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="6dp"
+            app:layout_constraintTop_toBottomOf="@id/topBar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="4dp"
-                android:background="@android:drawable/edit_text"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:gravity="center_vertical">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <Spinner
-                    android:id="@+id/spinnerIcon"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"/>
+                    android:layout_marginBottom="12dp"
+                    android:text="Add a New Habit"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <EditText
+                    android:text="@={viewModel.habitName}"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@android:drawable/edit_text"
+                    android:hint="Habit Name *"
+                    android:padding="12dp"/>
+
+                <EditText
+                    android:text="@={viewModel.habitDescription}"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@android:drawable/edit_text"
+                    android:hint="Short Description *"
+                    android:padding="12dp"/>
+
+                <EditText
+                    android:text="@={viewModel.habitGoal}"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@android:drawable/edit_text"
+                    android:hint="Goal *"
+                    android:inputType="number"
+                    android:padding="12dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="How many to complete this task?"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="12sp"/>
+
+                <EditText
+                    android:text="@={viewModel.habitUnit}"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@android:drawable/edit_text"
+                    android:hint="Unit *"
+                    android:padding="12dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="e.g., glasses, minutes, pages, meals"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Select Icon"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@android:drawable/edit_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <Spinner
+                        android:id="@+id/spinnerIcon"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-    <Button
-        android:id="@+id/btnCreate"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:text="Create Habit"
-        android:textColor="@android:color/white"
-        android:backgroundTint="@android:color/holo_purple"
-        android:layout_margin="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <Button
+            android:id="@+id/btnCreate"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_margin="16dp"
+            android:backgroundTint="@android:color/holo_purple"
+            android:text="Create Habit"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

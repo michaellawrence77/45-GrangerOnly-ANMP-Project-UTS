@@ -5,15 +5,21 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.habittracker.model.Habit
+import com.example.habittracker.model.User
 
 @Database(
-    entities = [Habit::class],
-    version = 1,
+    entities = [
+        Habit::class,
+        User::class
+    ],
+    version = 2,
     exportSchema = false
 )
 abstract class HabitDatabase : RoomDatabase() {
 
     abstract fun habitDao(): HabitDao
+
+    abstract fun userDao(): UserDao
 
     companion object {
 
@@ -22,17 +28,20 @@ abstract class HabitDatabase : RoomDatabase() {
 
         fun buildDatabase(context: Context): HabitDatabase {
 
-            if (INSTANCE == null) {
-                synchronized(this) {
-                    INSTANCE = Room.databaseBuilder(
-                        context.applicationContext,
-                        HabitDatabase::class.java,
-                        "habitdb"
-                    ).build()
-                }
-            }
+            return INSTANCE ?: synchronized(this) {
 
-            return INSTANCE!!
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    HabitDatabase::class.java,
+                    "habitdb"
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
+
+                INSTANCE = instance
+
+                instance
+            }
         }
     }
 }

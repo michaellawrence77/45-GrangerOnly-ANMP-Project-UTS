@@ -13,6 +13,9 @@ interface HabitDao {
     @Query("SELECT * FROM habit")
     fun getAllHabit(): LiveData<List<Habit>>
 
+    @Query("SELECT * FROM habit WHERE id = :id")
+    fun getHabit(id: Int): LiveData<Habit>
+
     @Insert
     suspend fun insertHabit(habit: Habit)
 
